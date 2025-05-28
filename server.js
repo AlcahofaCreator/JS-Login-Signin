@@ -20,8 +20,6 @@ app.post('/login', (req, res) => {
     });
 });
 
-
-
 app.post('/signin', (req, res) => {
     const { usuario, contrasena } = req.body;
     // Verifica si el usuario ya existe
