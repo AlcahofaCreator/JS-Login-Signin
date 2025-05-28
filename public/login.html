@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <a href="signin.html" class="crear-cuenta-btn">Crear cuenta</a>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm" method="POST" action="/login">
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" name="usuario" required>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <div class="message" id="message"></div>
+    </div>
+    <script>
+        const form = document.getElementById('loginForm');
+        const messageDiv = document.getElementById('message');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            fetch('/login', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            })
+                .then(res => res.text())
+                .then(text => {
+                    messageDiv.textContent = text;
+                    if (text === 'Login exitoso') {
+                        messageDiv.style.color = 'green';
+                    } else {
+                        messageDiv.style.color = '#d00';
+                    }
+                });
+        });
+    </script>
+</body>
+
+</html>

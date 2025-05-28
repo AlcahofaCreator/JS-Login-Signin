@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Cuenta</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <a href="login.html" class="crear-cuenta-btn">Iniciar sesión</a>
+    <div class="login-container">
+        <h2>Crear Cuenta</h2>
+        <form id="signinForm" method="POST" action="/signin">
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" name="usuario" required>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" required>
+            <label for="confirmar">Confirmar Contraseña:</label>
+            <input type="password" id="confirmar" name="confirmar" required>
+            <button type="submit">Crear cuenta</button>
+        </form>
+        <div class="message" id="message"></div>
+    </div>
+    <script>
+        const form = document.getElementById('signinForm');
+        const messageDiv = document.getElementById('message');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            if (formData.get('contrasena') !== formData.get('confirmar')) {
+                messageDiv.textContent = 'Las contraseñas no coinciden';
+                messageDiv.style.color = '#d00';
+                return;
+            }
+            fetch('/signin', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            })
+                .then(res => res.text())
+                .then(text => {
+                    messageDiv.textContent = text;
+                    if (text === 'Cuenta creada exitosamente') {
+                        messageDiv.style.color = 'green';
+                    } else {
+                        messageDiv.style.color = '#d00';
+                    }
+                });
+        });
+    </script>
+</body>
+
+</html>
